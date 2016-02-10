@@ -4,7 +4,7 @@ namespace GérerMission.Metier
 {
    public class MotifFin
    {
-      public sbyte? IdMotif {get; set;}
+      public sbyte IdMotif {get; set;}
       public string LibelleMotif {get; set;}
       
         public MotifFin()

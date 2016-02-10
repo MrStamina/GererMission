@@ -19,6 +19,8 @@ namespace GérerMission.Metier
       public DateTime? DateFin {get; set;}
       public MotifFin  Motif {get; set;}
       public List<Contact> Contacts { get; set; }
+      
+      public int CodeEntreprise { get; set; }
 
         public Mission()
         {
@@ -29,6 +31,20 @@ namespace GérerMission.Metier
         {
             IdMission = idMission;
             EntrepriseOffre = ent;
+            Motif = motif;
+            QualificationDemandee = qualif;
+            NiveauDemande = niv;
+            Consult = consult;
+            DateOuverture = dateOuv;
+            DateFin = dateFin;
+            RemunerationProposee = remu;
+            Precisions = precis;
+            Duree = duree;
+        }
+        public Mission(int idMission, int initCodeEntreprise, MotifFin motif, Qualification qualif, Niveau niv, Consultant consult, DateTime dateOuv, DateTime? dateFin, decimal? remu, string precis, sbyte? duree)
+        {
+            IdMission = idMission;
+            CodeEntreprise = initCodeEntreprise;
             Motif = motif;
             QualificationDemandee = qualif;
             NiveauDemande = niv;

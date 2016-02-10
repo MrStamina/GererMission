@@ -279,6 +279,129 @@ namespace GérerMission.Dao
                 }
             }
         }
+
+
+
+        //Gestion de la modification d'une mission
+
+        #region Modif/Ajout/Suppression de mission
+        public static bool UpdMission(Mission miss)
+        {
+            using (SqlConnection sqlConnect = GetConnection())
+            {
+                using (SqlCommand sqlCde = new SqlCommand())
+                {
+                    sqlCde.Connection = sqlConnect;
+                    string strsql = "UpdMissions";
+                    sqlCde.CommandText = strsql;
+                    sqlCde.CommandType = CommandType.StoredProcedure;
+                    sqlCde.Parameters.Clear();
+                    sqlCde.Parameters.Add(new SqlParameter("@idm", SqlDbType.Int)).Value = miss.IdMission;
+                    sqlCde.Parameters.Add(new SqlParameter("@vidEntreprise", SqlDbType.Int)).Value = miss.EntrepriseOffre.IdEntreprise;
+                    sqlCde.Parameters.Add(new SqlParameter("@vidMotif", SqlDbType.TinyInt)).Value = null;
+                    sqlCde.Parameters.Add(new SqlParameter("@vidQualif", SqlDbType.Int)).Value = miss.QualificationDemandee.IdQualification;
+                    sqlCde.Parameters.Add(new SqlParameter("@vidNiveau",SqlDbType.TinyInt)).Value = miss.NiveauDemande.IdNiveau;
+                    sqlCde.Parameters.Add(new SqlParameter("@vidConsult",SqlDbType.TinyInt)).Value = miss.Consult.IdConsultant;
+                    sqlCde.Parameters.Add(new SqlParameter("@vDateouv", SqlDbType.DateTime)).Value = miss.DateOuverture;
+                    sqlCde.Parameters.Add(new SqlParameter("@vDatefin", SqlDbType.DateTime)).Value = miss.DateFin;
+                    sqlCde.Parameters.Add(new SqlParameter("@vRemu", SqlDbType.Money)).Value = miss.RemunerationProposee;
+                    sqlCde.Parameters.Add(new SqlParameter("@vPreci", SqlDbType.VarChar)).Value = miss.Precisions;
+                    sqlCde.Parameters.Add(new SqlParameter("@vDuree", SqlDbType.TinyInt)).Value = miss.Duree;
+                    try
+                    {
+                        int n = sqlCde.ExecuteNonQuery();
+                        if (n != 1)
+                            throw new DaoExceptionAfficheMessage("La suppression a échoué");
+                        return true;
+                    }
+                    catch (SqlException ex)
+                    {
+                        throw new DaoExceptionAfficheMessage("La suppression a échoué : \n" + ex.Message, ex);
+                    }
+                }
+            }
+        }
+
+        // Ajout d'une mission
+
+        public static bool AddMission(Mission miss, out int idMission)
+        {
+            using (SqlConnection sqlConnect = GetConnection())
+            {
+                using (SqlCommand sqlCde = new SqlCommand())
+                {
+                    sqlCde.Connection = sqlConnect;
+                    string strSql = "AddMission";
+                    try
+                    {
+                        sqlCde.CommandType = CommandType.StoredProcedure;
+                        sqlCde.CommandText = strSql;
+
+                        //Paramètres
+                        sqlCde.Parameters.Add(new SqlParameter("@idEntreprise", SqlDbType.Int)).Value = miss.CodeEntreprise;
+                        if (miss.Motif != null)
+                            sqlCde.Parameters.Add(new SqlParameter("@idMotif", SqlDbType.TinyInt)).Value = miss.Motif.IdMotif;
+                        sqlCde.Parameters.Add(new SqlParameter("@idQualification", SqlDbType.Int)).Value = miss.QualificationDemandee.IdQualification;
+                        if(miss.NiveauDemande != null)
+                        sqlCde.Parameters.Add(new SqlParameter("@idNiveau", SqlDbType.TinyInt)).Value = miss.NiveauDemande.IdNiveau;
+                        sqlCde.Parameters.Add(new SqlParameter("@idConsultant", SqlDbType.TinyInt)).Value = miss.Consult.IdConsultant;
+                        sqlCde.Parameters.Add(new SqlParameter("@dateouverture", SqlDbType.DateTime)).Value = miss.DateOuverture;
+                        if (miss.DateFin != null)
+                            sqlCde.Parameters.Add(new SqlParameter("@datefin", SqlDbType.DateTime)).Value = miss.DateFin;
+                        if (miss.RemunerationProposee != null)
+                            sqlCde.Parameters.Add(new SqlParameter("@remu", SqlDbType.Money)).Value = miss.RemunerationProposee;
+                        if(miss.Precisions != string.Empty)
+                        sqlCde.Parameters.Add(new SqlParameter("@precision", SqlDbType.VarChar)).Value = miss.Precisions;
+                        if (miss.Duree != null)
+                            sqlCde.Parameters.Add(new SqlParameter("@duree", SqlDbType.TinyInt)).Value = miss.Duree;
+
+                        //Paramètre de sortie
+                        sqlCde.Parameters.Add(new SqlParameter("@idMission", SqlDbType.Int)).Direction = ParameterDirection.Output;
+
+                        int n = sqlCde.ExecuteNonQuery();
+                        if (n != 1)
+                            throw new DaoExceptionAfficheMessage("La création de la mission a échoué");
+                        else
+                            idMission = (int)sqlCde.Parameters["@idMission"].Value;
+                        return true;
+                    }
+                    catch(SqlException ex)
+                    {
+                        throw new DaoExceptionAfficheMessage("La création de la mission a échoué : \n" + ex.Message, ex);
+                    }
+
+                }
+            }
+        }
+
+        //Gestion de la suppression d'une mission
+        public static bool DelMission(Mission miss)
+        {
+            using (SqlConnection sqlConnect = GetConnection())
+            {
+                using (SqlCommand sqlCde = new SqlCommand())
+                {
+                    sqlCde.Connection = sqlConnect;
+                    string strsql = "DelMission";
+                    sqlCde.CommandText = strsql;
+                    sqlCde.CommandType = CommandType.StoredProcedure;
+                    sqlCde.Parameters.Clear();
+                    sqlCde.Parameters.Add(new SqlParameter("@idMission", SqlDbType.Int)).Value = miss.IdMission;
+                    try
+                    {
+                        int n = sqlCde.ExecuteNonQuery();
+                        if (n != 1)
+                            throw new DaoExceptionAfficheMessage("La suppression a échoué");
+                        return true;
+                    }
+                    catch (SqlException ex)
+                    {
+                        throw new DaoExceptionAfficheMessage("La suppression a échoué : \n" + ex.Message, ex);
+                    }
+                }
+            }
+        }
+        #endregion
     }
-    
+
 }

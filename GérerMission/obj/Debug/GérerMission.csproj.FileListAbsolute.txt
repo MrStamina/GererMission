@@ -21,3 +21,10 @@ C:\Users\Cdi07\Desktop\GérerMission\obj\Debug\GérerMission.GererMission.resour
 C:\Users\Cdi07\Desktop\GérerMission\obj\Debug\GérerMission.AfficherDétails.resources
 C:\Users\Cdi07\Desktop\GérerMission\obj\Debug\GérerMission.Properties.Resources.resources
 C:\Users\Cdi07\Desktop\GérerMission\obj\Debug\GérerMission.csproj.GenerateResource.Cache
+C:\Users\Cdi07\Desktop\GitHub\GererMission\GérerMission\bin\Debug\GérerMission.exe
+C:\Users\Cdi07\Desktop\GitHub\GererMission\GérerMission\bin\Debug\GérerMission.pdb
+C:\Users\Cdi07\Desktop\GitHub\GererMission\GérerMission\obj\Debug\GérerMission.csprojResolveAssemblyReference.cache
+C:\Users\Cdi07\Desktop\GitHub\GererMission\GérerMission\obj\Debug\GérerMission.GererMission.resources
+C:\Users\Cdi07\Desktop\GitHub\GererMission\GérerMission\obj\Debug\GérerMission.AfficherDétails.resources
+C:\Users\Cdi07\Desktop\GitHub\GererMission\GérerMission\obj\Debug\GérerMission.Properties.Resources.resources
+C:\Users\Cdi07\Desktop\GitHub\GererMission\GérerMission\obj\Debug\GérerMission.csproj.GenerateResource.Cache

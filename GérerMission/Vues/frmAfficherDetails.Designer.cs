@@ -30,16 +30,17 @@
         {
             this.components = new System.ComponentModel.Container();
             this.groupBoxMission = new System.Windows.Forms.GroupBox();
-            this.comboBoxNiveau = new System.Windows.Forms.ComboBox();
+            this.comboBoxMotif = new System.Windows.Forms.ComboBox();
             this.missionBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.motifBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.comboBoxNiveau = new System.Windows.Forms.ComboBox();
             this.niveauBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.textBoxRemuneration = new System.Windows.Forms.TextBox();
             this.labelNiveau = new System.Windows.Forms.Label();
             this.buttonAnnuler = new System.Windows.Forms.Button();
             this.labelMotif = new System.Windows.Forms.Label();
-            this.motifBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.labelDateFin = new System.Windows.Forms.Label();
-            this.maskedTextBox1 = new System.Windows.Forms.MaskedTextBox();
+            this.maskedTextBoxDateFin = new System.Windows.Forms.MaskedTextBox();
             this.labelConsultant = new System.Windows.Forms.Label();
             this.labelQualif = new System.Windows.Forms.Label();
             this.labelDuree = new System.Windows.Forms.Label();
@@ -52,13 +53,12 @@
             this.qualificationBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.numericUpDownDuree = new System.Windows.Forms.NumericUpDown();
             this.textBoxPrecision = new System.Windows.Forms.TextBox();
-            this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
+            this.dateTimePickerDateOuv = new System.Windows.Forms.DateTimePicker();
             this.buttonValider = new System.Windows.Forms.Button();
-            this.comboBoxMotif = new System.Windows.Forms.ComboBox();
             this.groupBoxMission.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.missionBindingSource)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.niveauBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.motifBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.niveauBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.consultantBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.qualificationBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownDuree)).BeginInit();
@@ -73,7 +73,7 @@
             this.groupBoxMission.Controls.Add(this.buttonAnnuler);
             this.groupBoxMission.Controls.Add(this.labelMotif);
             this.groupBoxMission.Controls.Add(this.labelDateFin);
-            this.groupBoxMission.Controls.Add(this.maskedTextBox1);
+            this.groupBoxMission.Controls.Add(this.maskedTextBoxDateFin);
             this.groupBoxMission.Controls.Add(this.labelConsultant);
             this.groupBoxMission.Controls.Add(this.labelQualif);
             this.groupBoxMission.Controls.Add(this.labelDuree);
@@ -84,7 +84,7 @@
             this.groupBoxMission.Controls.Add(this.comboBoxQualification);
             this.groupBoxMission.Controls.Add(this.numericUpDownDuree);
             this.groupBoxMission.Controls.Add(this.textBoxPrecision);
-            this.groupBoxMission.Controls.Add(this.dateTimePicker1);
+            this.groupBoxMission.Controls.Add(this.dateTimePickerDateOuv);
             this.groupBoxMission.Controls.Add(this.buttonValider);
             this.groupBoxMission.Location = new System.Drawing.Point(22, 31);
             this.groupBoxMission.Name = "groupBoxMission";
@@ -92,6 +92,26 @@
             this.groupBoxMission.TabIndex = 0;
             this.groupBoxMission.TabStop = false;
             this.groupBoxMission.Text = "Informations";
+            // 
+            // comboBoxMotif
+            // 
+            this.comboBoxMotif.DataBindings.Add(new System.Windows.Forms.Binding("SelectedItem", this.missionBindingSource, "Motif", true, System.Windows.Forms.DataSourceUpdateMode.Never));
+            this.comboBoxMotif.DataBindings.Add(new System.Windows.Forms.Binding("SelectedValue", this.missionBindingSource, "Motif", true));
+            this.comboBoxMotif.DataSource = this.motifBindingSource;
+            this.comboBoxMotif.DisplayMember = "LibelleMotif";
+            this.comboBoxMotif.FormattingEnabled = true;
+            this.comboBoxMotif.Location = new System.Drawing.Point(145, 362);
+            this.comboBoxMotif.Name = "comboBoxMotif";
+            this.comboBoxMotif.Size = new System.Drawing.Size(120, 21);
+            this.comboBoxMotif.TabIndex = 30;
+            // 
+            // missionBindingSource
+            // 
+            this.missionBindingSource.DataSource = typeof(GérerMission.Metier.Mission);
+            // 
+            // motifBindingSource
+            // 
+            this.motifBindingSource.DataSource = typeof(GérerMission.Metier.MotifFin);
             // 
             // comboBoxNiveau
             // 
@@ -105,10 +125,6 @@
             this.comboBoxNiveau.Name = "comboBoxNiveau";
             this.comboBoxNiveau.Size = new System.Drawing.Size(120, 21);
             this.comboBoxNiveau.TabIndex = 29;
-            // 
-            // missionBindingSource
-            // 
-            this.missionBindingSource.DataSource = typeof(GérerMission.Metier.Mission);
             // 
             // niveauBindingSource
             // 
@@ -137,7 +153,7 @@
             this.buttonAnnuler.Name = "buttonAnnuler";
             this.buttonAnnuler.Size = new System.Drawing.Size(83, 25);
             this.buttonAnnuler.TabIndex = 25;
-            this.buttonAnnuler.Text = "Annuler";
+            this.buttonAnnuler.Text = "Retour";
             this.buttonAnnuler.UseVisualStyleBackColor = true;
             this.buttonAnnuler.Click += new System.EventHandler(this.buttonAnnuler_Click);
             // 
@@ -150,10 +166,6 @@
             this.labelMotif.TabIndex = 24;
             this.labelMotif.Text = "Motif de fin";
             // 
-            // motifBindingSource
-            // 
-            this.motifBindingSource.DataSource = typeof(GérerMission.Metier.MotifFin);
-            // 
             // labelDateFin
             // 
             this.labelDateFin.AutoSize = true;
@@ -163,15 +175,15 @@
             this.labelDateFin.TabIndex = 22;
             this.labelDateFin.Text = "Date de fin";
             // 
-            // maskedTextBox1
+            // maskedTextBoxDateFin
             // 
-            this.maskedTextBox1.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.missionBindingSource, "DateFin", true));
-            this.maskedTextBox1.Location = new System.Drawing.Point(145, 324);
-            this.maskedTextBox1.Mask = "00/00/0000";
-            this.maskedTextBox1.Name = "maskedTextBox1";
-            this.maskedTextBox1.Size = new System.Drawing.Size(120, 20);
-            this.maskedTextBox1.TabIndex = 8;
-            this.maskedTextBox1.ValidatingType = typeof(System.DateTime);
+            this.maskedTextBoxDateFin.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.missionBindingSource, "DateFin", true));
+            this.maskedTextBoxDateFin.Location = new System.Drawing.Point(145, 324);
+            this.maskedTextBoxDateFin.Mask = "00/00/0000";
+            this.maskedTextBoxDateFin.Name = "maskedTextBoxDateFin";
+            this.maskedTextBoxDateFin.Size = new System.Drawing.Size(120, 20);
+            this.maskedTextBoxDateFin.TabIndex = 8;
+            this.maskedTextBoxDateFin.ValidatingType = typeof(System.DateTime);
             // 
             // labelConsultant
             // 
@@ -278,15 +290,14 @@
             this.textBoxPrecision.Name = "textBoxPrecision";
             this.textBoxPrecision.Size = new System.Drawing.Size(118, 23);
             this.textBoxPrecision.TabIndex = 2;
-            this.textBoxPrecision.Validating += new System.ComponentModel.CancelEventHandler(this.textBoxPrecision_Validating);
             // 
-            // dateTimePicker1
+            // dateTimePickerDateOuv
             // 
-            this.dateTimePicker1.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dateTimePicker1.Location = new System.Drawing.Point(145, 41);
-            this.dateTimePicker1.Name = "dateTimePicker1";
-            this.dateTimePicker1.Size = new System.Drawing.Size(118, 20);
-            this.dateTimePicker1.TabIndex = 1;
+            this.dateTimePickerDateOuv.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.dateTimePickerDateOuv.Location = new System.Drawing.Point(145, 41);
+            this.dateTimePickerDateOuv.Name = "dateTimePickerDateOuv";
+            this.dateTimePickerDateOuv.Size = new System.Drawing.Size(118, 20);
+            this.dateTimePickerDateOuv.TabIndex = 1;
             // 
             // buttonValider
             // 
@@ -296,19 +307,7 @@
             this.buttonValider.TabIndex = 10;
             this.buttonValider.Text = "Valider";
             this.buttonValider.UseVisualStyleBackColor = true;
-            // 
-            // comboBoxMotif
-            // 
-            this.comboBoxMotif.DataBindings.Add(new System.Windows.Forms.Binding("SelectedItem", this.missionBindingSource, "Motif", true, System.Windows.Forms.DataSourceUpdateMode.Never));
-            this.comboBoxMotif.DataBindings.Add(new System.Windows.Forms.Binding("SelectedValue", this.missionBindingSource, "Motif", true));
-            this.comboBoxMotif.DataSource = this.motifBindingSource;
-            this.comboBoxMotif.DisplayMember = "LibelleMotif";
-            this.comboBoxMotif.DropDownStyle = System.Windows.Forms.ComboBoxStyle.Simple;
-            this.comboBoxMotif.FormattingEnabled = true;
-            this.comboBoxMotif.Location = new System.Drawing.Point(145, 362);
-            this.comboBoxMotif.Name = "comboBoxMotif";
-            this.comboBoxMotif.Size = new System.Drawing.Size(120, 21);
-            this.comboBoxMotif.TabIndex = 30;
+            this.buttonValider.Click += new System.EventHandler(this.buttonValider_Click);
             // 
             // AfficherDétails
             // 
@@ -323,8 +322,8 @@
             this.groupBoxMission.ResumeLayout(false);
             this.groupBoxMission.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.missionBindingSource)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.niveauBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.motifBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.niveauBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.consultantBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.qualificationBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownDuree)).EndInit();
@@ -339,7 +338,7 @@
         private System.Windows.Forms.Button buttonAnnuler;
         private System.Windows.Forms.Label labelMotif;
         private System.Windows.Forms.Label labelDateFin;
-        private System.Windows.Forms.MaskedTextBox maskedTextBox1;
+        private System.Windows.Forms.MaskedTextBox maskedTextBoxDateFin;
         private System.Windows.Forms.Label labelConsultant;
         private System.Windows.Forms.Label labelQualif;
         private System.Windows.Forms.Label labelDuree;
@@ -350,7 +349,7 @@
         private System.Windows.Forms.ComboBox comboBoxQualification;
         private System.Windows.Forms.NumericUpDown numericUpDownDuree;
         private System.Windows.Forms.TextBox textBoxPrecision;
-        private System.Windows.Forms.DateTimePicker dateTimePicker1;
+        private System.Windows.Forms.DateTimePicker dateTimePickerDateOuv;
         private System.Windows.Forms.Button buttonValider;
         private System.Windows.Forms.BindingSource consultantBindingSource;
         private System.Windows.Forms.BindingSource qualificationBindingSource;

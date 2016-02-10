@@ -16,6 +16,7 @@ namespace GérerMission
     public partial class GererMission : Form
     {
         private bool OuiNon;
+        Mission newMiss = null;
 
         //private Entreprise entrepriseEnCours;
 
@@ -30,7 +31,7 @@ namespace GérerMission
             try
             {
                 AlimenterEntreprise();
-                AlimenterQualif();//plop
+                AlimenterQualif();
                 
                 comboBoxChoixEntreprise.SelectedItem = null;
                 
@@ -89,15 +90,13 @@ namespace GérerMission
 
         private void comboBoxChoixEntreprise_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if(comboBoxChoixEntreprise.SelectedItem != null)
+            if (comboBoxChoixEntreprise.SelectedItem != null)
             {
-
                 missionBindingSource.DataSource = DaoMission.GetAllMissions(((Entreprise)comboBoxChoixEntreprise.SelectedItem).IdEntreprise);
                 dataGridViewMissions.Visible = true;
-                //entrepriseEnCours = (Entreprise)comboBoxChoixEntreprise.SelectedItem;
-                //AfficherMissions();
-
+                buttonCreer.Enabled = true;
             }
+           
         }
 
         private void dataGridViewMissions_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -113,15 +112,21 @@ namespace GérerMission
             {
                 AfficherDétails affdet = new AfficherDétails((Mission)dataGridViewMissions.CurrentRow.DataBoundItem, OuiNon = true);
                 affdet.Show();
+                
             }
             else if(e.ColumnIndex == dataGridViewMissions.Columns["Supprimer"].Index && e.RowIndex >= 0)
             {
                 string message = "Etes-vous sûr de vouloir supprimer";
-                string caption = "Suppression d'une prévision";
+                string caption = "Suppression d'une mission";
                 var result = MessageBox.Show(message, caption, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (result == DialogResult.Yes)
                 {
-                    
+                    newMiss = (dataGridViewMissions.Rows[e.RowIndex].DataBoundItem) as Mission;
+                    if(DaoMission.DelMission(newMiss) == true)
+                    {
+                        missionBindingSource.Remove(newMiss);
+                        missionBindingSource.ResetBindings(false);
+                    }
                 }
             }
         }
@@ -148,14 +153,14 @@ namespace GérerMission
         //Gestion du bouton Créer
         private void buttonCreer_Click(object sender, EventArgs e)
         {
-            AfficherDétails affdet = new AfficherDétails();
-            affdet.Show();
+            
+            missionBindingSource.SuspendBinding();
+            AfficherDétails affcreate = new AfficherDétails(((Entreprise)comboBoxChoixEntreprise.SelectedItem).IdEntreprise);
+            affcreate.Show();
+            missionBindingSource.ResetBindings(true);
         }
 
-        public void EnableOrNot (bool OuiNon)
-        {
-
-        }
+        
 
        // Rechercher et affichage des missions
         //    private void AfficherMissions()

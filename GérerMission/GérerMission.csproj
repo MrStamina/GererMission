@@ -114,7 +114,10 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <Content Include="Procédures stockées\AddMission.sql" />
+    <Content Include="Procédures stockées\DelMission.sql" />
     <Content Include="Procédures stockées\GetAllMissions.sql" />
+    <Content Include="Procédures stockées\UpdMissions.sql" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

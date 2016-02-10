@@ -17,17 +17,55 @@ namespace GérerMission
 {
     public partial class AfficherDétails : Form
     {
+        private Mission mission;
+        private bool ModifOrNot;
+        private int codeEntreprise;
         
         
         public AfficherDétails(Mission miss, bool OuiNon)
         {
            
             Demarrage(miss);
-            ChangerEnabledTrueOrFalse(OuiNon);
+            if (OuiNon == true)
+            {
+                if (miss.Motif.IdMotif == 2)
+                {
+                    ChangerEnabledTrueOrFalse(!OuiNon);
+                    MessageBox.Show("Cette mission est cloturée, la modification est désormais impossible");
+                    buttonValider.Enabled = false;
+                }
+                else
+                {
+                    ChangerEnabledTrueOrFalse(OuiNon);
+                    
+                }
+            }
+            else if (OuiNon == false)
+            {
+                ChangerEnabledTrueOrFalse(OuiNon);
+                buttonValider.Enabled = false;
+
+            }
+            ModifOrNot = true;
         }
+        public AfficherDétails(int code)
+        {
+            InitializeComponent();
+            AlimenterConsultants();
+            AlimenterMotif();
+            AlimenterNiveau();
+            AlimenterQualifs();
+            comboBoxConsultant.SelectedItem = null;
+            comboBoxQualification.SelectedItem = null;
+            comboBoxMotif.SelectedItem = null;
+            comboBoxNiveau.SelectedItem = null;
+            ModifOrNot = false;
+            codeEntreprise = code;
+        }
+
         public AfficherDétails()
         {
-            Demarrage(null);
+            InitializeComponent();
         }
 
         private void Demarrage (Mission miss)
@@ -50,7 +88,13 @@ namespace GérerMission
             AlimenterNiveau();
             AlimenterQualifs();
             AlimenterConsultants();
-           ;
+            mission = miss;
+            if (miss.Motif == null)
+            {
+                comboBoxMotif.SelectedIndex = -1;
+            }
+          
+           
             
         }
        
@@ -143,22 +187,55 @@ namespace GérerMission
         //Gestion du bouton annuler
         private void buttonAnnuler_Click(object sender, EventArgs e)
         {
+            missionBindingSource.ResetCurrentItem();
             this.Close();
         }
 
         //Méthode enable 
         private void ChangerEnabledTrueOrFalse(bool trueFalse)
         {
-            dateTimePicker1.Enabled = trueFalse;
+            dateTimePickerDateOuv.Enabled = trueFalse;
             textBoxPrecision.Enabled = trueFalse;
             textBoxRemuneration.Enabled = trueFalse;
             numericUpDownDuree.Enabled = trueFalse;
             comboBoxQualification.Enabled = trueFalse;
             comboBoxConsultant.Enabled = trueFalse;
             comboBoxNiveau.Enabled = trueFalse;
-            maskedTextBox1.Enabled = trueFalse;
+            maskedTextBoxDateFin.Enabled = trueFalse;
             comboBoxMotif.Enabled = trueFalse;
 
+        }
+
+        private void buttonValider_Click(object sender, EventArgs e)
+        {
+            if (ModifOrNot == true)
+            {
+                if (comboBoxMotif.SelectedIndex == -1)
+                    mission.Motif = null;
+                if (DaoMission.UpdMission(mission) == true)
+                {
+                    missionBindingSource.ResumeBinding();
+                }
+                else
+                    MessageBox.Show("Mise à jour non effectuée");
+            }
+            else if(ModifOrNot == false)
+            {
+                int codeMiss = 0;
+                Mission oMission = new Mission(codeMiss, codeEntreprise,(MotifFin)comboBoxMotif.SelectedItem, (Qualification)comboBoxQualification.SelectedItem,
+                    (Niveau)comboBoxNiveau.SelectedItem, (Consultant)comboBoxConsultant.SelectedItem,
+                    dateTimePickerDateOuv.Value, Convert.ToDateTime(maskedTextBoxDateFin.Text),
+                    Convert.ToDecimal(textBoxRemuneration.Text), textBoxPrecision.Text, Convert.ToSByte(numericUpDownDuree.Value));
+
+                if(DaoMission.AddMission(oMission, out codeMiss) == true)
+                {
+                    oMission.IdMission = codeMiss;
+                    missionBindingSource.Add(oMission);
+                }
+
+            }
+            this.Close();
+                
         }
     }
 }
