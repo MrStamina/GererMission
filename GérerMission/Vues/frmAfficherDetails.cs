@@ -71,7 +71,7 @@ namespace GérerMission
             //comboBoxConsultant.SelectedItem = null;
         }
 
-        // Validation des champs saisis
+        
 
         // Méthodes binding
         #region Chargement binding
