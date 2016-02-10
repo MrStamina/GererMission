@@ -28,3 +28,13 @@ C:\Users\Cdi07\Desktop\GitHub\GererMission\GérerMission\obj\Debug\GérerMission
 C:\Users\Cdi07\Desktop\GitHub\GererMission\GérerMission\obj\Debug\GérerMission.AfficherDétails.resources
 C:\Users\Cdi07\Desktop\GitHub\GererMission\GérerMission\obj\Debug\GérerMission.Properties.Resources.resources
 C:\Users\Cdi07\Desktop\GitHub\GererMission\GérerMission\obj\Debug\GérerMission.csproj.GenerateResource.Cache
+C:\Users\Lucas\Desktop\GitHub\GererMission\GérerMission\bin\Debug\GérerMission.exe.config
+C:\Users\Lucas\Desktop\GitHub\GererMission\GérerMission\obj\Debug\GérerMission.exe
+C:\Users\Lucas\Desktop\GitHub\GererMission\GérerMission\obj\Debug\GérerMission.pdb
+C:\Users\Lucas\Desktop\GitHub\GererMission\GérerMission\bin\Debug\GérerMission.exe
+C:\Users\Lucas\Desktop\GitHub\GererMission\GérerMission\bin\Debug\GérerMission.pdb
+C:\Users\Lucas\Desktop\GitHub\GererMission\GérerMission\obj\Debug\GérerMission.csprojResolveAssemblyReference.cache
+C:\Users\Lucas\Desktop\GitHub\GererMission\GérerMission\obj\Debug\GérerMission.GererMission.resources
+C:\Users\Lucas\Desktop\GitHub\GererMission\GérerMission\obj\Debug\GérerMission.AfficherDétails.resources
+C:\Users\Lucas\Desktop\GitHub\GererMission\GérerMission\obj\Debug\GérerMission.Properties.Resources.resources
+C:\Users\Lucas\Desktop\GitHub\GererMission\GérerMission\obj\Debug\GérerMission.csproj.GenerateResource.Cache

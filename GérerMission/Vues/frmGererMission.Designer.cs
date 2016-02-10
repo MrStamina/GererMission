@@ -51,6 +51,7 @@
             this.dateFinDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.motifDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.missionBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.labelMessage = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.entrepriseBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewMissions)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.qualificationBindingSource)).BeginInit();
@@ -62,7 +63,7 @@
             this.comboBoxChoixEntreprise.DataSource = this.entrepriseBindingSource;
             this.comboBoxChoixEntreprise.DisplayMember = "RaisonSociale";
             this.comboBoxChoixEntreprise.FormattingEnabled = true;
-            this.comboBoxChoixEntreprise.Location = new System.Drawing.Point(158, 31);
+            this.comboBoxChoixEntreprise.Location = new System.Drawing.Point(101, 49);
             this.comboBoxChoixEntreprise.Name = "comboBoxChoixEntreprise";
             this.comboBoxChoixEntreprise.Size = new System.Drawing.Size(130, 21);
             this.comboBoxChoixEntreprise.TabIndex = 0;
@@ -76,11 +77,12 @@
             // labelChoixEntreprise
             // 
             this.labelChoixEntreprise.AutoSize = true;
-            this.labelChoixEntreprise.Location = new System.Drawing.Point(12, 34);
+            this.labelChoixEntreprise.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelChoixEntreprise.Location = new System.Drawing.Point(85, 27);
             this.labelChoixEntreprise.Name = "labelChoixEntreprise";
-            this.labelChoixEntreprise.Size = new System.Drawing.Size(136, 13);
+            this.labelChoixEntreprise.Size = new System.Drawing.Size(169, 14);
             this.labelChoixEntreprise.TabIndex = 1;
-            this.labelChoixEntreprise.Text = "Sélectionner une entreprise";
+            this.labelChoixEntreprise.Text = "Sélectionner une entreprise :";
             // 
             // buttonQuitter
             // 
@@ -125,6 +127,7 @@
             this.dateFinDataGridViewTextBoxColumn,
             this.motifDataGridViewTextBoxColumn});
             this.dataGridViewMissions.DataSource = this.missionBindingSource;
+            this.dataGridViewMissions.Enabled = false;
             this.dataGridViewMissions.Location = new System.Drawing.Point(3, 98);
             this.dataGridViewMissions.Name = "dataGridViewMissions";
             this.dataGridViewMissions.ReadOnly = true;
@@ -261,12 +264,22 @@
             // 
             this.missionBindingSource.DataSource = typeof(GérerMission.Metier.Mission);
             // 
+            // labelMessage
+            // 
+            this.labelMessage.AutoSize = true;
+            this.labelMessage.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelMessage.Location = new System.Drawing.Point(188, 80);
+            this.labelMessage.Name = "labelMessage";
+            this.labelMessage.Size = new System.Drawing.Size(0, 15);
+            this.labelMessage.TabIndex = 6;
+            // 
             // GererMission
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(696, 495);
             this.ControlBox = false;
+            this.Controls.Add(this.labelMessage);
             this.Controls.Add(this.dataGridViewMissions);
             this.Controls.Add(this.buttonCreer);
             this.Controls.Add(this.buttonQuitter);
@@ -309,6 +322,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn consultDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn dateFinDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn motifDataGridViewTextBoxColumn;
+        private System.Windows.Forms.Label labelMessage;
     }
 }
 

@@ -16,7 +16,8 @@ namespace GérerMission
     public partial class GererMission : Form
     {
         private bool OuiNon;
-        Mission newMiss = null;
+        private Mission newMiss = null;
+        private Entreprise entrepriseEnCours;
 
         //private Entreprise entrepriseEnCours;
 
@@ -32,11 +33,8 @@ namespace GérerMission
             {
                 AlimenterEntreprise();
                 AlimenterQualif();
-                
                 comboBoxChoixEntreprise.SelectedItem = null;
-                
-
-
+              
             }
             catch(DaoExceptionFinApplication dfa)
             {
@@ -90,11 +88,26 @@ namespace GérerMission
 
         private void comboBoxChoixEntreprise_SelectedIndexChanged(object sender, EventArgs e)
         {
+            int nombresMission = 0;
+            
             if (comboBoxChoixEntreprise.SelectedItem != null)
             {
                 missionBindingSource.DataSource = DaoMission.GetAllMissions(((Entreprise)comboBoxChoixEntreprise.SelectedItem).IdEntreprise);
-                dataGridViewMissions.Visible = true;
+                nombresMission = DaoMission.GetAllMissions(((Entreprise)comboBoxChoixEntreprise.SelectedItem).IdEntreprise).Count;
+                if (nombresMission == 0)
+                {
+                    labelMessage.ForeColor = Color.Red;
+                    labelMessage.Text = "Aucune mission disponible pour cette entreprise";
+                    dataGridViewMissions.Visible = false;
+
+                }
+                else
+                {
+                    dataGridViewMissions.Visible = true;
+                    labelMessage.ResetText();
+                }
                 buttonCreer.Enabled = true;
+                
             }
            
         }
@@ -160,7 +173,7 @@ namespace GérerMission
             missionBindingSource.ResetBindings(true);
         }
 
-        
+
 
        // Rechercher et affichage des missions
         //    private void AfficherMissions()
@@ -185,6 +198,7 @@ namespace GérerMission
         //    else
         //    {
         //        dataGridViewMissions.Visible = false;
+        //        labelMessage.Text = "Aucune mission disponible";
         //    }
         //}
 

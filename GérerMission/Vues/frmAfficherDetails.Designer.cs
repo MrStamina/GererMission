@@ -30,6 +30,8 @@
         {
             this.components = new System.ComponentModel.Container();
             this.groupBoxMission = new System.Windows.Forms.GroupBox();
+            this.labelQualifOblig = new System.Windows.Forms.Label();
+            this.labelDateOblig = new System.Windows.Forms.Label();
             this.comboBoxMotif = new System.Windows.Forms.ComboBox();
             this.missionBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.motifBindingSource = new System.Windows.Forms.BindingSource(this.components);
@@ -55,6 +57,8 @@
             this.textBoxPrecision = new System.Windows.Forms.TextBox();
             this.dateTimePickerDateOuv = new System.Windows.Forms.DateTimePicker();
             this.buttonValider = new System.Windows.Forms.Button();
+            this.labelChampsOblig = new System.Windows.Forms.Label();
+            this.errorProviderDateFin = new System.Windows.Forms.ErrorProvider(this.components);
             this.groupBoxMission.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.missionBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.motifBindingSource)).BeginInit();
@@ -62,10 +66,13 @@
             ((System.ComponentModel.ISupportInitialize)(this.consultantBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.qualificationBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownDuree)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.errorProviderDateFin)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBoxMission
             // 
+            this.groupBoxMission.Controls.Add(this.labelQualifOblig);
+            this.groupBoxMission.Controls.Add(this.labelDateOblig);
             this.groupBoxMission.Controls.Add(this.comboBoxMotif);
             this.groupBoxMission.Controls.Add(this.comboBoxNiveau);
             this.groupBoxMission.Controls.Add(this.textBoxRemuneration);
@@ -92,6 +99,28 @@
             this.groupBoxMission.TabIndex = 0;
             this.groupBoxMission.TabStop = false;
             this.groupBoxMission.Text = "Informations";
+            // 
+            // labelQualifOblig
+            // 
+            this.labelQualifOblig.AutoSize = true;
+            this.labelQualifOblig.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelQualifOblig.ForeColor = System.Drawing.Color.Red;
+            this.labelQualifOblig.Location = new System.Drawing.Point(271, 196);
+            this.labelQualifOblig.Name = "labelQualifOblig";
+            this.labelQualifOblig.Size = new System.Drawing.Size(14, 16);
+            this.labelQualifOblig.TabIndex = 32;
+            this.labelQualifOblig.Text = "*";
+            // 
+            // labelDateOblig
+            // 
+            this.labelDateOblig.AutoSize = true;
+            this.labelDateOblig.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelDateOblig.ForeColor = System.Drawing.Color.Red;
+            this.labelDateOblig.Location = new System.Drawing.Point(269, 41);
+            this.labelDateOblig.Name = "labelDateOblig";
+            this.labelDateOblig.Size = new System.Drawing.Size(14, 16);
+            this.labelDateOblig.TabIndex = 31;
+            this.labelDateOblig.Text = "*";
             // 
             // comboBoxMotif
             // 
@@ -137,6 +166,7 @@
             this.textBoxRemuneration.Name = "textBoxRemuneration";
             this.textBoxRemuneration.Size = new System.Drawing.Size(118, 20);
             this.textBoxRemuneration.TabIndex = 28;
+            this.textBoxRemuneration.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBoxRemuneration_KeyPress);
             // 
             // labelNiveau
             // 
@@ -184,6 +214,7 @@
             this.maskedTextBoxDateFin.Size = new System.Drawing.Size(120, 20);
             this.maskedTextBoxDateFin.TabIndex = 8;
             this.maskedTextBoxDateFin.ValidatingType = typeof(System.DateTime);
+            this.maskedTextBoxDateFin.Validating += new System.ComponentModel.CancelEventHandler(this.maskedTextBoxDateFin_Validating);
             // 
             // labelConsultant
             // 
@@ -290,14 +321,17 @@
             this.textBoxPrecision.Name = "textBoxPrecision";
             this.textBoxPrecision.Size = new System.Drawing.Size(118, 23);
             this.textBoxPrecision.TabIndex = 2;
+            this.textBoxPrecision.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBoxPrecision_KeyPress);
             // 
             // dateTimePickerDateOuv
             // 
+            this.dateTimePickerDateOuv.Enabled = false;
             this.dateTimePickerDateOuv.Format = System.Windows.Forms.DateTimePickerFormat.Short;
             this.dateTimePickerDateOuv.Location = new System.Drawing.Point(145, 41);
             this.dateTimePickerDateOuv.Name = "dateTimePickerDateOuv";
             this.dateTimePickerDateOuv.Size = new System.Drawing.Size(118, 20);
             this.dateTimePickerDateOuv.TabIndex = 1;
+            this.dateTimePickerDateOuv.Validating += new System.ComponentModel.CancelEventHandler(this.dateTimePickerDateOuv_Validating);
             // 
             // buttonValider
             // 
@@ -309,12 +343,28 @@
             this.buttonValider.UseVisualStyleBackColor = true;
             this.buttonValider.Click += new System.EventHandler(this.buttonValider_Click);
             // 
+            // labelChampsOblig
+            // 
+            this.labelChampsOblig.AutoSize = true;
+            this.labelChampsOblig.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelChampsOblig.ForeColor = System.Drawing.Color.Red;
+            this.labelChampsOblig.Location = new System.Drawing.Point(19, 464);
+            this.labelChampsOblig.Name = "labelChampsOblig";
+            this.labelChampsOblig.Size = new System.Drawing.Size(151, 15);
+            this.labelChampsOblig.TabIndex = 33;
+            this.labelChampsOblig.Text = "* Champs Obligatoires";
+            // 
+            // errorProviderDateFin
+            // 
+            this.errorProviderDateFin.ContainerControl = this;
+            // 
             // AfficherDétails
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(532, 472);
+            this.ClientSize = new System.Drawing.Size(532, 522);
             this.ControlBox = false;
+            this.Controls.Add(this.labelChampsOblig);
             this.Controls.Add(this.groupBoxMission);
             this.Name = "AfficherDétails";
             this.Text = "Détails";
@@ -327,7 +377,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.consultantBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.qualificationBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownDuree)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.errorProviderDateFin)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -359,5 +411,9 @@
         private System.Windows.Forms.TextBox textBoxRemuneration;
         private System.Windows.Forms.ComboBox comboBoxNiveau;
         private System.Windows.Forms.ComboBox comboBoxMotif;
+        private System.Windows.Forms.Label labelQualifOblig;
+        private System.Windows.Forms.Label labelDateOblig;
+        private System.Windows.Forms.Label labelChampsOblig;
+        private System.Windows.Forms.ErrorProvider errorProviderDateFin;
     }
 }

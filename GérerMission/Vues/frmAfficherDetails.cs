@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using GérerMission.Metier;
 using GérerMission.Dao;
 using GérerMission.Exceptions;
+using System.Text.RegularExpressions;
 
 
 
@@ -20,6 +21,8 @@ namespace GérerMission
         private Mission mission;
         private bool ModifOrNot;
         private int codeEntreprise;
+        private DateTime dateDebut;
+        private DateTime dateFin;
         
         
         public AfficherDétails(Mission miss, bool OuiNon)
@@ -28,16 +31,18 @@ namespace GérerMission
             Demarrage(miss);
             if (OuiNon == true)
             {
-                if (miss.Motif.IdMotif == 2)
+                if (miss.Motif == null || miss.Motif.IdMotif !=2)
+                {
+                    ChangerEnabledTrueOrFalse(OuiNon);
+                    
+
+                }
+                else
                 {
                     ChangerEnabledTrueOrFalse(!OuiNon);
                     MessageBox.Show("Cette mission est cloturée, la modification est désormais impossible");
                     buttonValider.Enabled = false;
-                }
-                else
-                {
-                    ChangerEnabledTrueOrFalse(OuiNon);
-                    
+                   
                 }
             }
             else if (OuiNon == false)
@@ -61,6 +66,7 @@ namespace GérerMission
             comboBoxNiveau.SelectedItem = null;
             ModifOrNot = false;
             codeEntreprise = code;
+            dateTimePickerDateOuv.Enabled = true;
         }
 
         public AfficherDétails()
@@ -194,7 +200,7 @@ namespace GérerMission
         //Méthode enable 
         private void ChangerEnabledTrueOrFalse(bool trueFalse)
         {
-            dateTimePickerDateOuv.Enabled = trueFalse;
+            
             textBoxPrecision.Enabled = trueFalse;
             textBoxRemuneration.Enabled = trueFalse;
             numericUpDownDuree.Enabled = trueFalse;
@@ -236,6 +242,54 @@ namespace GérerMission
             }
             this.Close();
                 
+        }
+
+        private void maskedTextBoxDateFin_Validating(object sender, CancelEventArgs e)
+        {
+            
+            if (DateTime.TryParse(maskedTextBoxDateFin.Text, out dateFin))
+            {
+
+                
+                if (dateFin <= dateDebut)
+                {
+                    
+                    errorProviderDateFin.SetError(maskedTextBoxDateFin,"Attention la date de fin doit être ultèrieure à la date de début");
+                    maskedTextBoxDateFin.Focus();
+
+                }
+                
+            }
+            else
+            {
+               
+                errorProviderDateFin.SetError(maskedTextBoxDateFin, "Veuillez entrer une date au format valide");
+                maskedTextBoxDateFin.Focus();
+            }
+        }
+
+        private void dateTimePickerDateOuv_Validating(object sender, CancelEventArgs e)
+        {
+            dateDebut = Convert.ToDateTime(dateTimePickerDateOuv.Value);
+        }
+
+      // On empeche les erreurs de saisies
+
+        private void textBoxPrecision_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsLetter(e.KeyChar) & e.KeyChar != (char)Keys.Back & e.KeyChar != (char)Keys.Space)
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void textBoxRemuneration_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsNumber(e.KeyChar) && e.KeyChar != ',' && e.KeyChar != (char)Keys.Back)
+            {
+                e.Handled = true;
+            }
+
         }
     }
 }
