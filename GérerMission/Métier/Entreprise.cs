@@ -25,16 +25,7 @@ namespace GérerMission.Metier
         {
 
         }
-
-        public List<Mission> GetMissions()
-        {
-            return Missions;
-        }
-
-        public void SetMissions(List<Mission> lesMissions)
-        {
-            Missions = lesMissions;
-        }
+             
 
         public override bool Equals(Object other)
         {

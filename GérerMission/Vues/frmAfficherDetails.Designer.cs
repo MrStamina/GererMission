@@ -30,6 +30,8 @@
         {
             this.components = new System.ComponentModel.Container();
             this.groupBoxMission = new System.Windows.Forms.GroupBox();
+            this.buttonAssocierCandidat = new System.Windows.Forms.Button();
+            this.labelConsultOblig = new System.Windows.Forms.Label();
             this.labelQualifOblig = new System.Windows.Forms.Label();
             this.labelDateOblig = new System.Windows.Forms.Label();
             this.comboBoxMotif = new System.Windows.Forms.ComboBox();
@@ -59,6 +61,7 @@
             this.buttonValider = new System.Windows.Forms.Button();
             this.labelChampsOblig = new System.Windows.Forms.Label();
             this.errorProviderDateFin = new System.Windows.Forms.ErrorProvider(this.components);
+            this.labelMessageUtilis = new System.Windows.Forms.Label();
             this.groupBoxMission.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.missionBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.motifBindingSource)).BeginInit();
@@ -71,6 +74,8 @@
             // 
             // groupBoxMission
             // 
+            this.groupBoxMission.Controls.Add(this.buttonAssocierCandidat);
+            this.groupBoxMission.Controls.Add(this.labelConsultOblig);
             this.groupBoxMission.Controls.Add(this.labelQualifOblig);
             this.groupBoxMission.Controls.Add(this.labelDateOblig);
             this.groupBoxMission.Controls.Add(this.comboBoxMotif);
@@ -100,6 +105,26 @@
             this.groupBoxMission.TabStop = false;
             this.groupBoxMission.Text = "Informations";
             // 
+            // buttonAssocierCandidat
+            // 
+            this.buttonAssocierCandidat.Location = new System.Drawing.Point(325, 324);
+            this.buttonAssocierCandidat.Name = "buttonAssocierCandidat";
+            this.buttonAssocierCandidat.Size = new System.Drawing.Size(126, 25);
+            this.buttonAssocierCandidat.TabIndex = 34;
+            this.buttonAssocierCandidat.Text = "Associer Candidat";
+            this.buttonAssocierCandidat.UseVisualStyleBackColor = true;
+            // 
+            // labelConsultOblig
+            // 
+            this.labelConsultOblig.AutoSize = true;
+            this.labelConsultOblig.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelConsultOblig.ForeColor = System.Drawing.Color.Red;
+            this.labelConsultOblig.Location = new System.Drawing.Point(271, 243);
+            this.labelConsultOblig.Name = "labelConsultOblig";
+            this.labelConsultOblig.Size = new System.Drawing.Size(14, 16);
+            this.labelConsultOblig.TabIndex = 33;
+            this.labelConsultOblig.Text = "*";
+            // 
             // labelQualifOblig
             // 
             this.labelQualifOblig.AutoSize = true;
@@ -128,6 +153,7 @@
             this.comboBoxMotif.DataBindings.Add(new System.Windows.Forms.Binding("SelectedValue", this.missionBindingSource, "Motif", true));
             this.comboBoxMotif.DataSource = this.motifBindingSource;
             this.comboBoxMotif.DisplayMember = "LibelleMotif";
+            this.comboBoxMotif.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxMotif.FormattingEnabled = true;
             this.comboBoxMotif.Location = new System.Drawing.Point(145, 362);
             this.comboBoxMotif.Name = "comboBoxMotif";
@@ -214,8 +240,7 @@
             this.maskedTextBoxDateFin.Size = new System.Drawing.Size(120, 20);
             this.maskedTextBoxDateFin.TabIndex = 8;
             this.maskedTextBoxDateFin.ValidatingType = typeof(System.DateTime);
-            this.maskedTextBoxDateFin.Validating += new System.ComponentModel.CancelEventHandler(this.maskedTextBoxDateFin_Validating);
-            // 
+            
             // labelConsultant
             // 
             this.labelConsultant.AutoSize = true;
@@ -331,7 +356,7 @@
             this.dateTimePickerDateOuv.Name = "dateTimePickerDateOuv";
             this.dateTimePickerDateOuv.Size = new System.Drawing.Size(118, 20);
             this.dateTimePickerDateOuv.TabIndex = 1;
-            this.dateTimePickerDateOuv.Validating += new System.ComponentModel.CancelEventHandler(this.dateTimePickerDateOuv_Validating);
+           
             // 
             // buttonValider
             // 
@@ -358,17 +383,27 @@
             // 
             this.errorProviderDateFin.ContainerControl = this;
             // 
+            // labelMessageUtilis
+            // 
+            this.labelMessageUtilis.AutoSize = true;
+            this.labelMessageUtilis.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelMessageUtilis.Location = new System.Drawing.Point(164, 15);
+            this.labelMessageUtilis.Name = "labelMessageUtilis";
+            this.labelMessageUtilis.Size = new System.Drawing.Size(0, 15);
+            this.labelMessageUtilis.TabIndex = 34;
+            // 
             // AfficherDétails
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(532, 522);
             this.ControlBox = false;
+            this.Controls.Add(this.labelMessageUtilis);
             this.Controls.Add(this.labelChampsOblig);
             this.Controls.Add(this.groupBoxMission);
             this.Name = "AfficherDétails";
             this.Text = "Détails";
-            this.Load += new System.EventHandler(this.AfficherDétails_Load);
+      
             this.groupBoxMission.ResumeLayout(false);
             this.groupBoxMission.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.missionBindingSource)).EndInit();
@@ -415,5 +450,8 @@
         private System.Windows.Forms.Label labelDateOblig;
         private System.Windows.Forms.Label labelChampsOblig;
         private System.Windows.Forms.ErrorProvider errorProviderDateFin;
+        private System.Windows.Forms.Label labelConsultOblig;
+        private System.Windows.Forms.Button buttonAssocierCandidat;
+        private System.Windows.Forms.Label labelMessageUtilis;
     }
 }

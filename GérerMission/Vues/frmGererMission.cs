@@ -17,9 +17,10 @@ namespace GérerMission
     {
         private bool OuiNon;
         private Mission newMiss = null;
-        private Entreprise entrepriseEnCours;
-
+        
         //private Entreprise entrepriseEnCours;
+
+        
 
         public GererMission()
         {
@@ -48,7 +49,7 @@ namespace GérerMission
             
         }
 
-        // Lorsqu'une entreprise est selectionnée on affiche ses missions
+      
 
 
         // Binding Source
@@ -85,7 +86,7 @@ namespace GérerMission
         }
         
         
-
+        //Gestion de la combobox
         private void comboBoxChoixEntreprise_SelectedIndexChanged(object sender, EventArgs e)
         {
             int nombresMission = 0;
@@ -112,6 +113,7 @@ namespace GérerMission
            
         }
 
+        //Gestion de la datagridView
         private void dataGridViewMissions_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
            
@@ -126,22 +128,50 @@ namespace GérerMission
                 AfficherDétails affdet = new AfficherDétails((Mission)dataGridViewMissions.CurrentRow.DataBoundItem, OuiNon = true);
                 affdet.Show();
                 
+
             }
             else if(e.ColumnIndex == dataGridViewMissions.Columns["Supprimer"].Index && e.RowIndex >= 0)
             {
+                int nombresMission = 0;
+                newMiss = (dataGridViewMissions.Rows[e.RowIndex].DataBoundItem) as Mission;
                 string message = "Etes-vous sûr de vouloir supprimer";
                 string caption = "Suppression d'une mission";
                 var result = MessageBox.Show(message, caption, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (result == DialogResult.Yes)
                 {
-                    newMiss = (dataGridViewMissions.Rows[e.RowIndex].DataBoundItem) as Mission;
-                    if(DaoMission.DelMission(newMiss) == true)
+                    try
+                    {                        
+                        if (DaoMission.DelMission(newMiss) == true)
+                        {
+                            missionBindingSource.Remove(newMiss);
+                            missionBindingSource.ResetBindings(false);
+                        }
+                    }
+                    catch(DaoExceptionAfficheMessage def)
                     {
-                        missionBindingSource.Remove(newMiss);
-                        missionBindingSource.ResetBindings(false);
+                        MessageBox.Show(def.Message);
+                    }
+                    catch(Exception ex)
+                    {
+                        MessageBox.Show(ex.Message);
                     }
                 }
+                nombresMission = DaoMission.GetAllMissions(((Entreprise)comboBoxChoixEntreprise.SelectedItem).IdEntreprise).Count;
+                if (nombresMission == 0)
+                {
+                    labelMessage.ForeColor = Color.Red;
+                    labelMessage.Text = "Aucune mission disponible pour cette entreprise";
+                    dataGridViewMissions.Visible = false;
+
+                }
+                else
+                {
+                    dataGridViewMissions.Visible = true;
+                    labelMessage.ResetText();
+                }
+
             }
+            dataGridViewMissions.Refresh();
         }
 
         //Gestion du bouton quitter
@@ -167,40 +197,24 @@ namespace GérerMission
         private void buttonCreer_Click(object sender, EventArgs e)
         {
             
-            missionBindingSource.SuspendBinding();
-            AfficherDétails affcreate = new AfficherDétails(((Entreprise)comboBoxChoixEntreprise.SelectedItem).IdEntreprise);
+            //missionBindingSource.SuspendBinding();
+            AfficherDétails affcreate = new AfficherDétails(((Entreprise)comboBoxChoixEntreprise.SelectedItem).IdEntreprise, this);
+            //dataGridViewMissions.Visible = false;
             affcreate.Show();
             missionBindingSource.ResetBindings(true);
+            
+            dataGridViewMissions.Refresh();
         }
 
 
+        //Méthode pour rafraichir la dgw
+        public void RefreshDataGridView(Mission miss)
+        {
 
-       // Rechercher et affichage des missions
-        //    private void AfficherMissions()
-        //{
-        //    List<Mission> mission = entrepriseEnCours.GetMissions();
-        //    if (mission.Count == 0)
-        //    {
-        //        mission = DaoMission.GetAllMissions(entrepriseEnCours.IdEntreprise);
-        //        entrepriseEnCours.SetMissions(mission);
-        //    }
-        //    missionBindingSource.DataSource = mission;
-        //    AffichageDataGridView(mission.Count);
-        //}
-
-        //private void AffichageDataGridView(int i)
-        //{
-        //    if (i > 0)
-        //    {
-        //        dataGridViewMissions.ClearSelection();
-        //        dataGridViewMissions.Visible = true;
-        //    }
-        //    else
-        //    {
-        //        dataGridViewMissions.Visible = false;
-        //        labelMessage.Text = "Aucune mission disponible";
-        //    }
-        //}
+            dataGridViewMissions.Refresh();
+            missionBindingSource.Add(miss);
+        }
+                    
 
     }
 }

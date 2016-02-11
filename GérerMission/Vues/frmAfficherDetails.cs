@@ -11,6 +11,7 @@ using GérerMission.Metier;
 using GérerMission.Dao;
 using GérerMission.Exceptions;
 using System.Text.RegularExpressions;
+using GérerMission.Utilitaires;
 
 
 
@@ -19,12 +20,19 @@ namespace GérerMission
     public partial class AfficherDétails : Form
     {
         private Mission mission;
-        private bool ModifOrNot;
+        private bool modifOrNot;
+        private bool motifDateFin;
         private int codeEntreprise;
         private DateTime dateDebut;
-        private DateTime dateFin;
+        private DateTime? dateFin;
+        sbyte? duree;
+        decimal? remu;
+        private GererMission frmMere;
+        private bool resultRemu;
         
-        
+
+
+
         public AfficherDétails(Mission miss, bool OuiNon)
         {
            
@@ -34,26 +42,28 @@ namespace GérerMission
                 if (miss.Motif == null || miss.Motif.IdMotif !=2)
                 {
                     ChangerEnabledTrueOrFalse(OuiNon);
-                    
-
+                   
                 }
                 else
                 {
                     ChangerEnabledTrueOrFalse(!OuiNon);
+                    
                     MessageBox.Show("Cette mission est cloturée, la modification est désormais impossible");
-                    buttonValider.Enabled = false;
+                    buttonAnnuler.Enabled = true;
                    
                 }
             }
             else if (OuiNon == false)
             {
                 ChangerEnabledTrueOrFalse(OuiNon);
+               
                 buttonValider.Enabled = false;
+                buttonAnnuler.Enabled = true;
 
             }
-            ModifOrNot = true;
+            modifOrNot = true;
         }
-        public AfficherDétails(int code)
+        public AfficherDétails(int code, GererMission gm)
         {
             InitializeComponent();
             AlimenterConsultants();
@@ -64,8 +74,9 @@ namespace GérerMission
             comboBoxQualification.SelectedItem = null;
             comboBoxMotif.SelectedItem = null;
             comboBoxNiveau.SelectedItem = null;
-            ModifOrNot = false;
+            modifOrNot = false;
             codeEntreprise = code;
+            frmMere = gm;
             dateTimePickerDateOuv.Enabled = true;
         }
 
@@ -99,29 +110,10 @@ namespace GérerMission
             {
                 comboBoxMotif.SelectedIndex = -1;
             }
-          
-           
+                  
             
         }
-       
-
-        private void textBoxPrecision_Validating(object sender, CancelEventArgs e)
-        {
-            if (textBoxPrecision.Text != string.Empty)
-            {
-
-            }
-        }
-
-        private void AfficherDétails_Load(object sender, EventArgs e)
-        {
-            //AlimenterQualifs();
-            //comboBoxQualification.SelectedItem = null;
-            //AlimenterConsultants();
-            //comboBoxConsultant.SelectedItem = null;
-        }
-
-        
+                             
 
         // Méthodes binding
         #region Chargement binding
@@ -197,10 +189,10 @@ namespace GérerMission
             this.Close();
         }
 
-        //Méthode enable 
-        private void ChangerEnabledTrueOrFalse(bool trueFalse)
+       // Méthode enable
+        public bool ChangerEnabledTrueOrFalse(bool trueFalse)
         {
-            
+
             textBoxPrecision.Enabled = trueFalse;
             textBoxRemuneration.Enabled = trueFalse;
             numericUpDownDuree.Enabled = trueFalse;
@@ -209,71 +201,135 @@ namespace GérerMission
             comboBoxNiveau.Enabled = trueFalse;
             maskedTextBoxDateFin.Enabled = trueFalse;
             comboBoxMotif.Enabled = trueFalse;
-
+            return true;
         }
+
+        //Gestion de la validation
 
         private void buttonValider_Click(object sender, EventArgs e)
         {
-            if (ModifOrNot == true)
-            {
-                if (comboBoxMotif.SelectedIndex == -1)
-                    mission.Motif = null;
-                if (DaoMission.UpdMission(mission) == true)
-                {
-                    missionBindingSource.ResumeBinding();
-                }
-                else
-                    MessageBox.Show("Mise à jour non effectuée");
-            }
-            else if(ModifOrNot == false)
-            {
-                int codeMiss = 0;
-                Mission oMission = new Mission(codeMiss, codeEntreprise,(MotifFin)comboBoxMotif.SelectedItem, (Qualification)comboBoxQualification.SelectedItem,
-                    (Niveau)comboBoxNiveau.SelectedItem, (Consultant)comboBoxConsultant.SelectedItem,
-                    dateTimePickerDateOuv.Value, Convert.ToDateTime(maskedTextBoxDateFin.Text),
-                    Convert.ToDecimal(textBoxRemuneration.Text), textBoxPrecision.Text, Convert.ToSByte(numericUpDownDuree.Value));
-
-                if(DaoMission.AddMission(oMission, out codeMiss) == true)
-                {
-                    oMission.IdMission = codeMiss;
-                    missionBindingSource.Add(oMission);
-                }
-
-            }
-            this.Close();
-                
-        }
-
-        private void maskedTextBoxDateFin_Validating(object sender, CancelEventArgs e)
-        {
+            VerifsEtGestionDate();
             
-            if (DateTime.TryParse(maskedTextBoxDateFin.Text, out dateFin))
+            if (comboBoxConsultant.SelectedItem != null && comboBoxQualification.SelectedItem != null && motifDateFin == true)
             {
-
-                
-                if (dateFin <= dateDebut)
+               
+                if (modifOrNot == true)
+                {
+                    try
+                    {
+                        if (comboBoxMotif.SelectedIndex == -1)
+                            mission.Motif = null;
+                        if (DaoMission.UpdMission(mission) == true)
+                         missionBindingSource.ResumeBinding();
+                        
+                    }
+                    catch(DaoExceptionAfficheMessage def)
+                    {
+                        MessageBox.Show(def.Message);
+                    }
+                    catch(Exception se)
+                    {
+                        MessageBox.Show(se.Message);
+                    }
+                }
+                else if (modifOrNot == false)
                 {
                     
-                    errorProviderDateFin.SetError(maskedTextBoxDateFin,"Attention la date de fin doit être ultèrieure à la date de début");
-                    maskedTextBoxDateFin.Focus();
+                    int codeMiss = 0;
+                    Mission oMission = new Mission(codeMiss, codeEntreprise, (MotifFin)comboBoxMotif.SelectedItem, (Qualification)comboBoxQualification.SelectedItem,
+                        (Niveau)comboBoxNiveau.SelectedItem, (Consultant)comboBoxConsultant.SelectedItem,
+                        dateDebut, dateFin, remu, textBoxPrecision.Text, duree);
+                    try
+                    {
 
+
+                        if (DaoMission.AddMission(oMission, out codeMiss) == true)
+                        {
+                            oMission.IdMission = codeMiss;
+                            frmMere.RefreshDataGridView(oMission);
+                        
+
+                        }
+                        
+                    }
+                    catch(DaoExceptionAfficheMessage def)
+                    {
+                        MessageBox.Show(def.Message);
+                    }
+                    catch(Exception ex)
+                    {
+                        MessageBox.Show(ex.Message);
+                    }
                 }
+                
+                this.Close();
+                
+                
                 
             }
             else
             {
-               
-                errorProviderDateFin.SetError(maskedTextBoxDateFin, "Veuillez entrer une date au format valide");
-                maskedTextBoxDateFin.Focus();
+                if (comboBoxConsultant.SelectedItem == null || comboBoxQualification.SelectedItem == null)
+                {
+                    labelMessageUtilis.ForeColor = Color.Red;
+                    labelMessageUtilis.Text = "Veuillez renseigner les champs obligatoires";
+                }
+                else if(motifDateFin == false)
+                {
+                    labelMessageUtilis.ForeColor = Color.Red;
+                    labelMessageUtilis.Text = "La date de fin et le motif de clôture sont indissociables";
+                }
+                
             }
+            
+                
         }
 
-        private void dateTimePickerDateOuv_Validating(object sender, CancelEventArgs e)
+        // Gestion des erreurs de dates et autres
+        private void VerifsEtGestionDate()
         {
-            dateDebut = Convert.ToDateTime(dateTimePickerDateOuv.Value);
+           
+            dateDebut = Convert.ToDateTime(dateTimePickerDateOuv.Text);
+            if (maskedTextBoxDateFin.Text == "  /  /")
+                dateFin = null;
+            else
+            {
+                   dateFin = Convert.ToDateTime(maskedTextBoxDateFin.Text);
+                    if (dateFin <= dateDebut)
+                    {
+
+                        errorProviderDateFin.SetError(maskedTextBoxDateFin, "Attention la date de fin doit être ultèrieure à la date de début");
+                        maskedTextBoxDateFin.Focus();
+
+                    }
+                    
+            }
+            if (numericUpDownDuree.Value == 0)
+                 duree = null;
+            else
+                duree = (sbyte)(numericUpDownDuree.Value);
+
+
+            if (textBoxRemuneration.Text == string.Empty)
+                remu = null;                      
+            else
+                remu = Convert.ToDecimal(textBoxRemuneration.Text);
+
+           // motif et date de fin indissociable
+
+            if (dateFin != null && comboBoxMotif.SelectedIndex == -1)
+                motifDateFin = false;
+            else if (dateFin == null && comboBoxMotif.SelectedIndex != -1)
+                motifDateFin = false;
+            else
+                motifDateFin = true;
+
+
         }
 
-      // On empeche les erreurs de saisies
+
+
+        // On empeche les erreurs de saisies
 
         private void textBoxPrecision_KeyPress(object sender, KeyPressEventArgs e)
         {

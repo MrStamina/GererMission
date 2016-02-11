@@ -127,7 +127,6 @@
             this.dateFinDataGridViewTextBoxColumn,
             this.motifDataGridViewTextBoxColumn});
             this.dataGridViewMissions.DataSource = this.missionBindingSource;
-            this.dataGridViewMissions.Enabled = false;
             this.dataGridViewMissions.Location = new System.Drawing.Point(3, 98);
             this.dataGridViewMissions.Name = "dataGridViewMissions";
             this.dataGridViewMissions.ReadOnly = true;

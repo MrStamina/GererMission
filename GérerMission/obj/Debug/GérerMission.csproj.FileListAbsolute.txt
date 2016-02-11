@@ -38,3 +38,5 @@ C:\Users\Lucas\Desktop\GitHub\GererMission\GérerMission\obj\Debug\GérerMission
 C:\Users\Lucas\Desktop\GitHub\GererMission\GérerMission\obj\Debug\GérerMission.AfficherDétails.resources
 C:\Users\Lucas\Desktop\GitHub\GererMission\GérerMission\obj\Debug\GérerMission.Properties.Resources.resources
 C:\Users\Lucas\Desktop\GitHub\GererMission\GérerMission\obj\Debug\GérerMission.csproj.GenerateResource.Cache
+C:\Users\Cdi07\Desktop\GitHub\GererMission\GérerMission\obj\Debug\GérerMission.frmAccueil.resources
+C:\Users\Cdi07\Desktop\GitHub\GererMission\GérerMission\obj\Debug\GérerMission.frmLogin.resources

@@ -16,7 +16,7 @@ namespace GérerMission
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new GererMission());
+            Application.Run(new frmAccueil());
         }
     }
 }

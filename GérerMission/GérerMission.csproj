@@ -51,6 +51,19 @@
     <Compile Include="Exceptions\DaoException.cs" />
     <Compile Include="Exceptions\DaoExceptionAfficheMessage.cs" />
     <Compile Include="Exceptions\DaoExceptionFinApplication.cs" />
+    <Compile Include="Utilitaires\Affichage.cs" />
+    <Compile Include="Vues\frmLogin.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Vues\frmLogin.Designer.cs">
+      <DependentUpon>frmLogin.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Vues\frmAccueil.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Vues\frmAccueil.Designer.cs">
+      <DependentUpon>frmAccueil.cs</DependentUpon>
+    </Compile>
     <Compile Include="Métier\Activite.cs" />
     <Compile Include="Métier\Candidat.cs" />
     <Compile Include="Métier\Consultant.cs" />
@@ -80,6 +93,12 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Vues\frmLogin.resx">
+      <DependentUpon>frmLogin.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vues\frmAccueil.resx">
+      <DependentUpon>frmAccueil.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Vues\frmGererMission.resx">
       <DependentUpon>frmGererMission.cs</DependentUpon>
     </EmbeddedResource>
