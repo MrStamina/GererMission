@@ -26,14 +26,14 @@ namespace GérerMission
         private DateTime dateDebut;
         private DateTime? dateFin;
         sbyte? duree;
-        decimal? remu;
+        decimal? remu;       
         private GererMission frmMere;
-        private bool resultRemu;
+      
         
 
 
 
-        public AfficherDétails(Mission miss, bool OuiNon)
+        public AfficherDétails(Mission miss, bool OuiNon, int code)
         {
            
             Demarrage(miss);
@@ -62,6 +62,7 @@ namespace GérerMission
 
             }
             modifOrNot = true;
+            codeEntreprise = code;
         }
         public AfficherDétails(int code, GererMission gm)
         {
@@ -109,6 +110,10 @@ namespace GérerMission
             if (miss.Motif == null)
             {
                 comboBoxMotif.SelectedIndex = -1;
+            }
+            if(miss.NiveauDemande == null)
+            {
+                comboBoxNiveau.SelectedIndex = -1;
             }
                   
             
@@ -209,80 +214,92 @@ namespace GérerMission
         private void buttonValider_Click(object sender, EventArgs e)
         {
             VerifsEtGestionDate();
-            
+
             if (comboBoxConsultant.SelectedItem != null && comboBoxQualification.SelectedItem != null && motifDateFin == true)
             {
-               
-                if (modifOrNot == true)
+                int codeMiss = 0;
+                Mission oMission = new Mission(mission.IdMission, codeEntreprise, (MotifFin)comboBoxMotif.SelectedItem, (Qualification)comboBoxQualification.SelectedItem,
+                    (Niveau)comboBoxNiveau.SelectedItem, (Consultant)comboBoxConsultant.SelectedItem,
+                    dateDebut, dateFin, remu, textBoxPrecision.Text, duree);
+                if (comboBoxMotif.SelectedItem == null)
                 {
-                    try
+                    oMission.Motif = null;
+
+                    if (comboBoxNiveau.SelectedItem == null)
                     {
-                        if (comboBoxMotif.SelectedIndex == -1)
-                            mission.Motif = null;
-                        if (DaoMission.UpdMission(mission) == true)
-                         missionBindingSource.ResumeBinding();
-                        
+                        oMission.NiveauDemande = null;
+
                     }
-                    catch(DaoExceptionAfficheMessage def)
-                    {
-                        MessageBox.Show(def.Message);
-                    }
-                    catch(Exception se)
-                    {
-                        MessageBox.Show(se.Message);
-                    }
-                }
-                else if (modifOrNot == false)
-                {
-                    
-                    int codeMiss = 0;
-                    Mission oMission = new Mission(codeMiss, codeEntreprise, (MotifFin)comboBoxMotif.SelectedItem, (Qualification)comboBoxQualification.SelectedItem,
-                        (Niveau)comboBoxNiveau.SelectedItem, (Consultant)comboBoxConsultant.SelectedItem,
-                        dateDebut, dateFin, remu, textBoxPrecision.Text, duree);
-                    try
-                    {
 
 
-                        if (DaoMission.AddMission(oMission, out codeMiss) == true)
+                    if (modifOrNot == true)
+                    {
+
+                        try
                         {
-                            oMission.IdMission = codeMiss;
-                            frmMere.RefreshDataGridView(oMission);
-                        
+
+                            if (DaoMission.UpdMission(oMission) == true)
+                                missionBindingSource.ResumeBinding();
 
                         }
-                        
+                        catch (DaoExceptionAfficheMessage def)
+                        {
+                            MessageBox.Show(def.Message);
+                        }
+                        catch (Exception se)
+                        {
+                            MessageBox.Show(se.Message);
+                        }
                     }
-                    catch(DaoExceptionAfficheMessage def)
+                    else if (modifOrNot == false)
                     {
-                        MessageBox.Show(def.Message);
+
+
+                        try
+                        {
+
+
+                            if (DaoMission.AddMission(oMission, out codeMiss) == true)
+                            {
+                                oMission.IdMission = codeMiss;
+                                frmMere.RefreshDataGridView(oMission);
+
+
+                            }
+
+                        }
+                        catch (DaoExceptionAfficheMessage def)
+                        {
+                            MessageBox.Show(def.Message);
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show(ex.Message);
+                        }
                     }
-                    catch(Exception ex)
+
+                    this.Close();
+
+
+
+                }
+                else
+                {
+                    if (comboBoxConsultant.SelectedItem == null || comboBoxQualification.SelectedItem == null)
                     {
-                        MessageBox.Show(ex.Message);
+                        labelMessageUtilis.ForeColor = Color.Red;
+                        labelMessageUtilis.Text = "Veuillez renseigner les champs obligatoires";
                     }
+                    else if (motifDateFin == false)
+                    {
+                        labelMessageUtilis.ForeColor = Color.Red;
+                        labelMessageUtilis.Text = "La date de fin et le motif de clôture sont indissociables";
+                    }
+
                 }
-                
-                this.Close();
-                
-                
-                
+
+
             }
-            else
-            {
-                if (comboBoxConsultant.SelectedItem == null || comboBoxQualification.SelectedItem == null)
-                {
-                    labelMessageUtilis.ForeColor = Color.Red;
-                    labelMessageUtilis.Text = "Veuillez renseigner les champs obligatoires";
-                }
-                else if(motifDateFin == false)
-                {
-                    labelMessageUtilis.ForeColor = Color.Red;
-                    labelMessageUtilis.Text = "La date de fin et le motif de clôture sont indissociables";
-                }
-                
-            }
-            
-                
         }
 
         // Gestion des erreurs de dates et autres
@@ -314,6 +331,8 @@ namespace GérerMission
                 remu = null;                      
             else
                 remu = Convert.ToDecimal(textBoxRemuneration.Text);
+
+           
 
            // motif et date de fin indissociable
 

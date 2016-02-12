@@ -119,13 +119,13 @@ namespace GérerMission
            
             if(e.ColumnIndex == dataGridViewMissions.Columns["Details"].Index && e.RowIndex >= 0 )
             {
-                AfficherDétails affdet = new AfficherDétails((Mission)dataGridViewMissions.CurrentRow.DataBoundItem, OuiNon = false);
+                AfficherDétails affdet = new AfficherDétails((Mission)dataGridViewMissions.CurrentRow.DataBoundItem, OuiNon = false, ((Entreprise)comboBoxChoixEntreprise.SelectedItem).IdEntreprise);
                 affdet.Show();
                          
             }
             else if(e.ColumnIndex == dataGridViewMissions.Columns["Modifier"].Index && e.RowIndex >= 0)
             {
-                AfficherDétails affdet = new AfficherDétails((Mission)dataGridViewMissions.CurrentRow.DataBoundItem, OuiNon = true);
+                AfficherDétails affdet = new AfficherDétails((Mission)dataGridViewMissions.CurrentRow.DataBoundItem, OuiNon = true, ((Entreprise)comboBoxChoixEntreprise.SelectedItem).IdEntreprise);
                 affdet.Show();
                 
 
@@ -197,13 +197,12 @@ namespace GérerMission
         private void buttonCreer_Click(object sender, EventArgs e)
         {
             
-            //missionBindingSource.SuspendBinding();
-            AfficherDétails affcreate = new AfficherDétails(((Entreprise)comboBoxChoixEntreprise.SelectedItem).IdEntreprise, this);
-            //dataGridViewMissions.Visible = false;
-            affcreate.Show();
-            missionBindingSource.ResetBindings(true);
             
-            dataGridViewMissions.Refresh();
+            AfficherDétails affcreate = new AfficherDétails(((Entreprise)comboBoxChoixEntreprise.SelectedItem).IdEntreprise, this);
+            
+            affcreate.Show();
+            
+                       
         }
 
 

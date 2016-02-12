@@ -38,7 +38,6 @@
             this.missionBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.motifBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.comboBoxNiveau = new System.Windows.Forms.ComboBox();
-            this.niveauBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.textBoxRemuneration = new System.Windows.Forms.TextBox();
             this.labelNiveau = new System.Windows.Forms.Label();
             this.buttonAnnuler = new System.Windows.Forms.Button();
@@ -59,16 +58,17 @@
             this.textBoxPrecision = new System.Windows.Forms.TextBox();
             this.dateTimePickerDateOuv = new System.Windows.Forms.DateTimePicker();
             this.buttonValider = new System.Windows.Forms.Button();
+            this.niveauBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.labelChampsOblig = new System.Windows.Forms.Label();
             this.errorProviderDateFin = new System.Windows.Forms.ErrorProvider(this.components);
             this.labelMessageUtilis = new System.Windows.Forms.Label();
             this.groupBoxMission.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.missionBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.motifBindingSource)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.niveauBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.consultantBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.qualificationBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownDuree)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.niveauBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProviderDateFin)).BeginInit();
             this.SuspendLayout();
             // 
@@ -171,7 +171,7 @@
             // comboBoxNiveau
             // 
             this.comboBoxNiveau.DataBindings.Add(new System.Windows.Forms.Binding("SelectedItem", this.missionBindingSource, "NiveauDemande", true, System.Windows.Forms.DataSourceUpdateMode.Never));
-            this.comboBoxNiveau.DataBindings.Add(new System.Windows.Forms.Binding("SelectedValue", this.missionBindingSource, "NiveauDemande", true));
+            this.comboBoxNiveau.DataBindings.Add(new System.Windows.Forms.Binding("SelectedValue", this.missionBindingSource, "NiveauDemande", true, System.Windows.Forms.DataSourceUpdateMode.Never));
             this.comboBoxNiveau.DataSource = this.niveauBindingSource;
             this.comboBoxNiveau.DisplayMember = "Libelle";
             this.comboBoxNiveau.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
@@ -180,10 +180,6 @@
             this.comboBoxNiveau.Name = "comboBoxNiveau";
             this.comboBoxNiveau.Size = new System.Drawing.Size(120, 21);
             this.comboBoxNiveau.TabIndex = 29;
-            // 
-            // niveauBindingSource
-            // 
-            this.niveauBindingSource.DataSource = typeof(GérerMission.Metier.Niveau);
             // 
             // textBoxRemuneration
             // 
@@ -240,7 +236,7 @@
             this.maskedTextBoxDateFin.Size = new System.Drawing.Size(120, 20);
             this.maskedTextBoxDateFin.TabIndex = 8;
             this.maskedTextBoxDateFin.ValidatingType = typeof(System.DateTime);
-            
+            // 
             // labelConsultant
             // 
             this.labelConsultant.AutoSize = true;
@@ -298,7 +294,7 @@
             // comboBoxConsultant
             // 
             this.comboBoxConsultant.DataBindings.Add(new System.Windows.Forms.Binding("SelectedItem", this.missionBindingSource, "Consult", true, System.Windows.Forms.DataSourceUpdateMode.Never));
-            this.comboBoxConsultant.DataBindings.Add(new System.Windows.Forms.Binding("SelectedValue", this.missionBindingSource, "Consult", true));
+            this.comboBoxConsultant.DataBindings.Add(new System.Windows.Forms.Binding("SelectedValue", this.missionBindingSource, "Consult", true, System.Windows.Forms.DataSourceUpdateMode.Never));
             this.comboBoxConsultant.DataSource = this.consultantBindingSource;
             this.comboBoxConsultant.DisplayMember = "NomConsultant";
             this.comboBoxConsultant.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
@@ -315,7 +311,7 @@
             // comboBoxQualification
             // 
             this.comboBoxQualification.DataBindings.Add(new System.Windows.Forms.Binding("SelectedItem", this.missionBindingSource, "QualificationDemandee", true, System.Windows.Forms.DataSourceUpdateMode.Never));
-            this.comboBoxQualification.DataBindings.Add(new System.Windows.Forms.Binding("SelectedValue", this.missionBindingSource, "QualificationDemandee", true));
+            this.comboBoxQualification.DataBindings.Add(new System.Windows.Forms.Binding("SelectedValue", this.missionBindingSource, "QualificationDemandee", true, System.Windows.Forms.DataSourceUpdateMode.Never));
             this.comboBoxQualification.DataSource = this.qualificationBindingSource;
             this.comboBoxQualification.DisplayMember = "LibelleQualification";
             this.comboBoxQualification.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
@@ -356,7 +352,6 @@
             this.dateTimePickerDateOuv.Name = "dateTimePickerDateOuv";
             this.dateTimePickerDateOuv.Size = new System.Drawing.Size(118, 20);
             this.dateTimePickerDateOuv.TabIndex = 1;
-           
             // 
             // buttonValider
             // 
@@ -367,6 +362,10 @@
             this.buttonValider.Text = "Valider";
             this.buttonValider.UseVisualStyleBackColor = true;
             this.buttonValider.Click += new System.EventHandler(this.buttonValider_Click);
+            // 
+            // niveauBindingSource
+            // 
+            this.niveauBindingSource.DataSource = typeof(GérerMission.Metier.Niveau);
             // 
             // labelChampsOblig
             // 
@@ -403,15 +402,14 @@
             this.Controls.Add(this.groupBoxMission);
             this.Name = "AfficherDétails";
             this.Text = "Détails";
-      
             this.groupBoxMission.ResumeLayout(false);
             this.groupBoxMission.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.missionBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.motifBindingSource)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.niveauBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.consultantBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.qualificationBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownDuree)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.niveauBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProviderDateFin)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

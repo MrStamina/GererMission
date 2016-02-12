@@ -297,16 +297,22 @@ namespace GérerMission.Dao
                     sqlCde.CommandType = CommandType.StoredProcedure;
                     sqlCde.Parameters.Clear();
                     sqlCde.Parameters.Add(new SqlParameter("@idm", SqlDbType.Int)).Value = miss.IdMission;
-                    sqlCde.Parameters.Add(new SqlParameter("@vidEntreprise", SqlDbType.Int)).Value = miss.EntrepriseOffre.IdEntreprise;
-                    sqlCde.Parameters.Add(new SqlParameter("@vidMotif", SqlDbType.TinyInt)).Value = null;
+                    sqlCde.Parameters.Add(new SqlParameter("@vidEntreprise", SqlDbType.Int)).Value = miss.CodeEntreprise;
+                    if(miss.Motif != null)
+                        sqlCde.Parameters.Add(new SqlParameter("@vidMotif", SqlDbType.TinyInt)).Value = miss.Motif.IdMotif;
                     sqlCde.Parameters.Add(new SqlParameter("@vidQualif", SqlDbType.Int)).Value = miss.QualificationDemandee.IdQualification;
-                    sqlCde.Parameters.Add(new SqlParameter("@vidNiveau",SqlDbType.TinyInt)).Value = miss.NiveauDemande.IdNiveau;
+                    if(miss.NiveauDemande != null)
+                        sqlCde.Parameters.Add(new SqlParameter("@vidNiveau", SqlDbType.TinyInt)).Value = miss.NiveauDemande.IdNiveau;
                     sqlCde.Parameters.Add(new SqlParameter("@vidConsult",SqlDbType.TinyInt)).Value = miss.Consult.IdConsultant;
                     sqlCde.Parameters.Add(new SqlParameter("@vDateouv", SqlDbType.DateTime)).Value = miss.DateOuverture;
-                    sqlCde.Parameters.Add(new SqlParameter("@vDatefin", SqlDbType.DateTime)).Value = miss.DateFin;
-                    sqlCde.Parameters.Add(new SqlParameter("@vRemu", SqlDbType.Money)).Value = miss.RemunerationProposee;
-                    sqlCde.Parameters.Add(new SqlParameter("@vPreci", SqlDbType.VarChar)).Value = miss.Precisions;
-                    sqlCde.Parameters.Add(new SqlParameter("@vDuree", SqlDbType.TinyInt)).Value = miss.Duree;
+                    if(miss.DateFin != null)
+                        sqlCde.Parameters.Add(new SqlParameter("@vDatefin", SqlDbType.DateTime)).Value = miss.DateFin;
+                    if(miss.RemunerationProposee != null)
+                        sqlCde.Parameters.Add(new SqlParameter("@vRemu", SqlDbType.Money)).Value = miss.RemunerationProposee;
+                    if(miss.Precisions != null)
+                        sqlCde.Parameters.Add(new SqlParameter("@vPreci", SqlDbType.VarChar)).Value = miss.Precisions;
+                    if(miss.Duree != null)
+                        sqlCde.Parameters.Add(new SqlParameter("@vDuree", SqlDbType.TinyInt)).Value = miss.Duree;
                     try
                     {
                         int n = sqlCde.ExecuteNonQuery();
@@ -343,7 +349,7 @@ namespace GérerMission.Dao
                             sqlCde.Parameters.Add(new SqlParameter("@idMotif", SqlDbType.TinyInt)).Value = miss.Motif.IdMotif;
                         sqlCde.Parameters.Add(new SqlParameter("@idQualification", SqlDbType.Int)).Value = miss.QualificationDemandee.IdQualification;
                         if(miss.NiveauDemande != null)
-                        sqlCde.Parameters.Add(new SqlParameter("@idNiveau", SqlDbType.TinyInt)).Value = miss.NiveauDemande.IdNiveau;
+                            sqlCde.Parameters.Add(new SqlParameter("@idNiveau", SqlDbType.TinyInt)).Value = miss.NiveauDemande.IdNiveau;
                         sqlCde.Parameters.Add(new SqlParameter("@idConsultant", SqlDbType.TinyInt)).Value = miss.Consult.IdConsultant;
                         sqlCde.Parameters.Add(new SqlParameter("@dateouverture", SqlDbType.DateTime)).Value = miss.DateOuverture;
                         if (miss.DateFin != null)
