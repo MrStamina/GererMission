@@ -89,24 +89,12 @@ namespace GérerMission
         //Gestion de la combobox
         private void comboBoxChoixEntreprise_SelectedIndexChanged(object sender, EventArgs e)
         {
-            int nombresMission = 0;
+         
             
             if (comboBoxChoixEntreprise.SelectedItem != null)
             {
                 missionBindingSource.DataSource = DaoMission.GetAllMissions(((Entreprise)comboBoxChoixEntreprise.SelectedItem).IdEntreprise);
-                nombresMission = DaoMission.GetAllMissions(((Entreprise)comboBoxChoixEntreprise.SelectedItem).IdEntreprise).Count;
-                if (nombresMission == 0)
-                {
-                    labelMessage.ForeColor = Color.Red;
-                    labelMessage.Text = "Aucune mission disponible pour cette entreprise";
-                    dataGridViewMissions.Visible = false;
-
-                }
-                else
-                {
-                    dataGridViewMissions.Visible = true;
-                    labelMessage.ResetText();
-                }
+                AfficheMessage();
                 buttonCreer.Enabled = true;
                 
             }
@@ -132,45 +120,40 @@ namespace GérerMission
             }
             else if(e.ColumnIndex == dataGridViewMissions.Columns["Supprimer"].Index && e.RowIndex >= 0)
             {
-                int nombresMission = 0;
+                          
                 newMiss = (dataGridViewMissions.Rows[e.RowIndex].DataBoundItem) as Mission;
-                string message = "Etes-vous sûr de vouloir supprimer";
-                string caption = "Suppression d'une mission";
-                var result = MessageBox.Show(message, caption, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                if (result == DialogResult.Yes)
+                if (newMiss.Motif == null)
                 {
-                    try
-                    {                        
-                        if (DaoMission.DelMission(newMiss) == true)
+                    string message = "Etes-vous sûr de vouloir supprimer";
+                    string caption = "Suppression d'une mission";
+                    var result = MessageBox.Show(message, caption, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                    if (result == DialogResult.Yes)
+                    {
+                        try
                         {
-                            missionBindingSource.Remove(newMiss);
-                            missionBindingSource.ResetBindings(false);
+                            if (DaoMission.DelMission(newMiss) == true)
+                            {
+                                missionBindingSource.Remove(newMiss);
+                                missionBindingSource.ResetBindings(false);
+                            }
+                        }
+                        catch (DaoExceptionAfficheMessage def)
+                        {
+                            MessageBox.Show(def.Message);
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show(ex.Message);
                         }
                     }
-                    catch(DaoExceptionAfficheMessage def)
-                    {
-                        MessageBox.Show(def.Message);
-                    }
-                    catch(Exception ex)
-                    {
-                        MessageBox.Show(ex.Message);
-                    }
-                }
-                nombresMission = DaoMission.GetAllMissions(((Entreprise)comboBoxChoixEntreprise.SelectedItem).IdEntreprise).Count;
-                if (nombresMission == 0)
-                {
-                    labelMessage.ForeColor = Color.Red;
-                    labelMessage.Text = "Aucune mission disponible pour cette entreprise";
-                    dataGridViewMissions.Visible = false;
-
                 }
                 else
                 {
-                    dataGridViewMissions.Visible = true;
-                    labelMessage.ResetText();
+                    MessageBox.Show("Une mission clôturée ne peut pas être supprimée");
                 }
-
+                           
             }
+            AfficheMessage();
             dataGridViewMissions.Refresh();
         }
 
@@ -214,6 +197,24 @@ namespace GérerMission
             missionBindingSource.Add(miss);
         }
                     
+        // Méthode pour Afficher un messahe utilisateur
 
+        public void AfficheMessage()
+        {
+            int nbrMiss;
+            nbrMiss = DaoMission.GetAllMissions(((Entreprise)comboBoxChoixEntreprise.SelectedItem).IdEntreprise).Count;
+            if (nbrMiss == 0)
+            { 
+                labelMessage.ForeColor = Color.Red;
+                labelMessage.Text = "Aucune mission disponible pour cette entreprise";
+                dataGridViewMissions.Visible = false;
+            }
+           else
+           {
+                dataGridViewMissions.Visible = true;
+                labelMessage.ResetText();
+           }     
+
+}
     }
 }

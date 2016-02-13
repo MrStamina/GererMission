@@ -39,7 +39,7 @@ namespace GérerMission
             Demarrage(miss);
             if (OuiNon == true)
             {
-                if (miss.Motif == null || miss.Motif.IdMotif !=2)
+                if (miss.Motif == null )
                 {
                     ChangerEnabledTrueOrFalse(OuiNon);
                    
@@ -195,7 +195,7 @@ namespace GérerMission
         }
 
        // Méthode enable
-        public bool ChangerEnabledTrueOrFalse(bool trueFalse)
+        public void ChangerEnabledTrueOrFalse(bool trueFalse)
         {
 
             textBoxPrecision.Enabled = trueFalse;
@@ -206,7 +206,8 @@ namespace GérerMission
             comboBoxNiveau.Enabled = trueFalse;
             maskedTextBoxDateFin.Enabled = trueFalse;
             comboBoxMotif.Enabled = trueFalse;
-            return true;
+            buttonValider.Enabled = trueFalse;
+           
         }
 
         //Gestion de la validation
@@ -218,29 +219,23 @@ namespace GérerMission
             if (comboBoxConsultant.SelectedItem != null && comboBoxQualification.SelectedItem != null && motifDateFin == true)
             {
                 int codeMiss = 0;
-                Mission oMission = new Mission(mission.IdMission, codeEntreprise, (MotifFin)comboBoxMotif.SelectedItem, (Qualification)comboBoxQualification.SelectedItem,
+                Mission oMission = new Mission(codeMiss, codeEntreprise, (MotifFin)comboBoxMotif.SelectedItem, (Qualification)comboBoxQualification.SelectedItem,
                     (Niveau)comboBoxNiveau.SelectedItem, (Consultant)comboBoxConsultant.SelectedItem,
                     dateDebut, dateFin, remu, textBoxPrecision.Text, duree);
-                if (comboBoxMotif.SelectedItem == null)
-                {
+                if (comboBoxMotif.SelectedItem == null)                
                     oMission.Motif = null;
-
-                    if (comboBoxNiveau.SelectedItem == null)
-                    {
-                        oMission.NiveauDemande = null;
-
-                    }
-
-
+                if (comboBoxNiveau.SelectedItem == null)                    
+                    oMission.NiveauDemande = null;
+                                      
                     if (modifOrNot == true)
                     {
-
                         try
                         {
-
                             if (DaoMission.UpdMission(oMission) == true)
+                            {
+                                codeMiss = mission.IdMission;
                                 missionBindingSource.ResumeBinding();
-
+                            }
                         }
                         catch (DaoExceptionAfficheMessage def)
                         {
@@ -253,18 +248,12 @@ namespace GérerMission
                     }
                     else if (modifOrNot == false)
                     {
-
-
                         try
                         {
-
-
                             if (DaoMission.AddMission(oMission, out codeMiss) == true)
                             {
                                 oMission.IdMission = codeMiss;
                                 frmMere.RefreshDataGridView(oMission);
-
-
                             }
 
                         }
@@ -277,29 +266,23 @@ namespace GérerMission
                             MessageBox.Show(ex.Message);
                         }
                     }
-
-                    this.Close();
-
-
-
-                }
-                else
+                    this.Close();                   
+                }        
+            else
+            {
+                if (comboBoxConsultant.SelectedItem == null || comboBoxQualification.SelectedItem == null)
                 {
-                    if (comboBoxConsultant.SelectedItem == null || comboBoxQualification.SelectedItem == null)
-                    {
-                        labelMessageUtilis.ForeColor = Color.Red;
-                        labelMessageUtilis.Text = "Veuillez renseigner les champs obligatoires";
-                    }
-                    else if (motifDateFin == false)
-                    {
-                        labelMessageUtilis.ForeColor = Color.Red;
-                        labelMessageUtilis.Text = "La date de fin et le motif de clôture sont indissociables";
-                    }
-
+                    labelMessageUtilis.ForeColor = Color.Red;
+                    labelMessageUtilis.Text = "Veuillez renseigner les champs obligatoires";
                 }
-
+                else if (motifDateFin == false)
+                {
+                    labelMessageUtilis.ForeColor = Color.Red;
+                    labelMessageUtilis.Text = "La date de fin et le motif de clôture sont indissociables";
+                }
 
             }
+
         }
 
         // Gestion des erreurs de dates et autres
